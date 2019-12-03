@@ -1,5 +1,11 @@
 <ul class="nav nav-pills flex-column">
-  <li class="nav-item"><a class="nav-link active">Dashboard</a></li>
-  <li class="nav-item"><a class="nav-link">Recipients</a></li>
-  <li class="nav-item"><a class="nav-link">Holidays</a></li>
+  <li class="nav-item"><a class="nav-link"
+       [routerLinkActive]="['active']"
+       [routerLink]="['dashboard']">Dashboard</a></li>
+  <li class="nav-item"><a class="nav-link"
+       [routerLinkActive]="['active']"
+       [routerLink]="['recipients']">Recipients</a></li>
+  <li class="nav-item"><a class="nav-link"
+       [routerLinkActive]="['active']"
+       [routerLink]="['holidays']">Holidays</a></li>
 </ul>

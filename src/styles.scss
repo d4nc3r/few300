@@ -1,1 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+// $body-bg: green;
+// $body-color: red;
+$primary: rgb(27, 194, 180);
+
+// include everything to start, go back before deploying to Prod and cherry pick only what we need
+@import '../node_modules/bootstrap/scss/bootstrap';

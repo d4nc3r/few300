@@ -1,1 +1,7 @@
-<p>holiday-list works!</p>
+<ul class="list-unstyled">
+  <li *ngFor="let holiday of model.holidays"
+      class="alert alert-info">
+    <h5>{{holiday.name}}</h5>
+    <p class="mb-0">On {{holiday.date | date:'longDate'}}</p>
+  </li>
+</ul>

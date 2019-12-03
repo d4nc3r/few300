@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
+import { StoreModule } from '@ngrx/store';
+
 import { GiftGivingComponent } from './gift-giving.component';
 import { NavComponent } from './components/nav/nav.component';
 import { DashboardComponent } from './containers/dashboard/dashboard.component';
@@ -8,6 +10,8 @@ import { RecipientsComponent } from './containers/recipients/recipients.componen
 import { HolidaysComponent } from './containers/holidays/holidays.component';
 import { HolidayEntryComponent } from './containers/holidays/holiday-entry/holiday-entry.component';
 import { HolidayListComponent } from './containers/holidays/holiday-list/holiday-list.component';
+import { featureName, reducers } from './reducers';
+import { HolidayListControlsComponent } from './containers/holidays/holiday-list-controls/holiday-list-controls.component';
 
 const routes: Routes = [
   {
@@ -22,10 +26,11 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [GiftGivingComponent, NavComponent, DashboardComponent, RecipientsComponent, HolidaysComponent, HolidayEntryComponent, HolidayListComponent],
+  declarations: [GiftGivingComponent, NavComponent, DashboardComponent, RecipientsComponent, HolidaysComponent, HolidayEntryComponent, HolidayListComponent, HolidayListControlsComponent],
   imports: [
     CommonModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    StoreModule.forFeature(featureName, reducers)
   ]
 })
 export class GiftGivingModule { }

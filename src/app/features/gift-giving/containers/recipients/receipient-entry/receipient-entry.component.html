@@ -1,11 +1,21 @@
 <form [formGroup]="form"
-      (ngSubmit)="submit()"
+      (ngSubmit)="submit(focusOnSubmit)"
       class="mb-5">
   <div class="form-group">
     <label for="name">Name</label>
     <input class="form-control"
            id="name"
+           #focusOnSubmit
            formControlName="name">
+    <div class="alert alert-danger"
+         *ngIf="hasErrors('name')">
+      <span *ngIf="displayError('name', 'required')">
+        name is required.
+      </span>
+      <span *ngIf="displayError('name', 'minlength')">
+        name must have a length of 3 or greater.
+      </span>
+    </div>
   </div>
   <div class="form-group">
     <label for="email">Email</label>
@@ -13,11 +23,22 @@
            class="form-control"
            id="email"
            formControlName="email">
+    <div class="alert alert-danger"
+         *ngIf="displayError('email', 'email')">
+      Email must be valid!
+    </div>
   </div>
-  <div class="form-group form-check">
+  <div *ngFor="let holiday of holidaysArray.controls; let i = index"
+       formArrayName="holidays"
+       class="form-group form-check">
     <input type="checkbox"
+           [formControlName]="i"
            class="form-check-input">
-    <label class="form-check-inline">Christmas 2019</label>
+    <label class="form-check-inline">{{holidays[i].name}} ({{holidays[i].date | date}})</label>
+  </div>
+  <div class="alert alert-danger"
+       *ngIf="displayArrayError('holidays', 'required')">
+    Must choose at least one holiday!
   </div>
   <input type="submit"
          class="btn btn-primary"

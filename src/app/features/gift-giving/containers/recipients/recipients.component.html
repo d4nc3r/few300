@@ -1,5 +1,5 @@
 <header>
   <h4>Recipients</h4>
 </header>
-<app-receipient-entry></app-receipient-entry>
-<app-receipient-list></app-receipient-list>
+<app-receipient-entry [holidays]="holidays$ | async"></app-receipient-entry>
+<app-receipient-list [model]="recipients$ | async"></app-receipient-list>

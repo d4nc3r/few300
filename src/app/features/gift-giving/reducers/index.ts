@@ -1,7 +1,11 @@
 import { ActionReducerMap, createFeatureSelector, createSelector } from '@ngrx/store';
+import * as moment from 'moment';
+
 import * as fromHolidays from './holidays.reducer';
 import * as fromHolidayModels from '../models/holidays';
 import * as fromHolidayListControl from './holiday-list-controls.reducer';
+import * as fromRecipients from './recipients.reducer';
+import * as fromRecipientsModel from '../models/recipients';
 import * as fromHolidayListControlModels from '../models/list-controls';
 
 export const featureName = 'giftGivingFeature';
@@ -9,11 +13,13 @@ export const featureName = 'giftGivingFeature';
 export interface GiftGivingState {
   holidays: fromHolidays.HolidayState;
   holidayListControls: fromHolidayListControl.HolidayListControlState;
+  recipients: fromRecipients.RecipientsState;
 }
 
 export const reducers: ActionReducerMap<GiftGivingState> = {
   holidays: fromHolidays.reducer,
-  holidayListControls: fromHolidayListControl.reducer
+  holidayListControls: fromHolidayListControl.reducer,
+  recipients: fromRecipients.reducer
 };
 
 // Selectors
@@ -24,9 +30,12 @@ const selectGiftFeature = createFeatureSelector<GiftGivingState>(featureName);
 // 2. Feature per branch
 const selectHolidaysBranch = createSelector(selectGiftFeature, g => g.holidays);
 const selectHolidayListControlsBranch = createSelector(selectGiftFeature, g => g.holidayListControls);
+const selectRecipientsBranch = createSelector(selectGiftFeature, g => g.recipients);
 
 // 3. Helpers
-const { selectAll: selectHolidaysArray } = fromHolidays.adapter.getSelectors(selectHolidaysBranch);
+const { selectAll: selectHolidaysArray, selectEntities: selectHolidaysEntities } = fromHolidays.adapter.getSelectors(selectHolidaysBranch);
+const { selectAll: selectRecipientsArray } = fromRecipients.adapter.getSelectors(selectRecipientsBranch);
+
 const selectShowAll = createSelector(
   selectHolidayListControlsBranch,
   b => b.showAll
@@ -90,6 +99,10 @@ export const selectHolidayModel = createSelector(
   h => h
 );
 
+export const selectHolidays = createSelector(
+  selectHolidayModelRaw,
+  r => r.holidays // TODO: filter/sort?
+);
 
 export const selectHolidayListControls = createSelector(
   selectHolidayListControlsBranch,
@@ -102,3 +115,30 @@ export const selectHolidayListControls = createSelector(
     } as fromHolidayListControlModels.ListControlsModel;
   }
 );
+
+export const selectRecipients = createSelector(
+  selectRecipientsArray,
+  selectHolidaysEntities,
+  (recipients, holidaysEntity) => {
+    return recipients.map(recipient => {
+      const holidays = recipient.selectedHolidayIds
+        .map(id => holidaysEntity[id])
+        .map(createHoliday);
+
+      return {
+        id: recipient.id,
+        name: recipient.name,
+        email: recipient.email,
+        holidays
+      } as fromRecipientsModel.RecipientListModel;
+    });
+  }
+);
+
+function createHoliday(holiday) {
+  const date = moment(holiday.date).format('MMM D, YYYY');
+  return {
+    id: holiday.id,
+    description: `${holiday.name} (${date})`
+  };
+}

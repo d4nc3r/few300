@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { RecipientListModel } from '../../../models';
 
 @Component({
   selector: 'app-receipient-list',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./receipient-list.component.scss']
 })
 export class ReceipientListComponent implements OnInit {
+  @Input() model: RecipientListModel[];
 
   constructor() { }
 

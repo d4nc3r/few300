@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { NavComponent } from './components/nav/nav.component';
 import { HomeComponent } from './components/home/home.component';
 import { GiftGivingModule } from './features/gift-giving/gift-giving.module';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,14 @@ import { GiftGivingModule } from './features/gift-giving/gift-giving.module';
     BrowserModule,
     GiftGivingModule,
     AppRoutingModule,
-    StoreModule.forRoot(reducers),
+    StoreModule.forRoot(reducers, {
+      runtimeChecks: {
+        strictActionImmutability: !environment.production,
+        strictActionSerializability: true,
+        strictStateImmutability: true,
+        strictStateSerializability: true // <-- this one will cause the default RouterStore to fail
+      }
+    }),
     StoreDevtoolsModule.instrument()
   ],
   providers: [],

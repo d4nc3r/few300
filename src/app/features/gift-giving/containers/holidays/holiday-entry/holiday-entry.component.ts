@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
+import * as moment from 'moment';
+
 import { GiftGivingState } from '../../../reducers';
 import * as holidaysActions from '../../../actions/holidays.actions';
 
@@ -18,6 +20,7 @@ export class HolidayEntryComponent implements OnInit {
   addHoliday(nameEl: HTMLInputElement, dateEl: HTMLInputElement) {
     const name = nameEl.value;
     const date = dateEl.valueAsDate.toISOString();
+    const momentDate = moment.utc(date).toISOString();
 
     // reset teh form
     nameEl.value = '';

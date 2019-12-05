@@ -14,19 +14,25 @@ export interface HolidayState extends EntityState<HolidayEntity> {
 
 export const adapter = createEntityAdapter<HolidayEntity>();
 
-// const initialState = adapter.getInitialState();
-const initialState: HolidayState = {
-  ids: ['1', '2', '3'],
-  entities: {
-    1: { id: '1', name: 'Christmas', date: new Date(2019, 11, 25).toISOString() },
-    2: { id: '2', name: 'Hanukkah', date: new Date(2019, 11, 22).toISOString() },
-    3: { id: '3', name: '4th of July', date: new Date(2020, 3, 4).toISOString() }
-  }
-};
+const initialState = adapter.getInitialState();
+// const initialState: HolidayState = {
+//   ids: ['1', '2', '3'],
+//   entities: {
+//     1: { id: '1', name: 'Christmas', date: new Date(2019, 11, 25).toISOString() },
+//     2: { id: '2', name: 'Hanukkah', date: new Date(2019, 11, 22).toISOString() },
+//     3: { id: '3', name: '4th of July', date: new Date(2020, 3, 4).toISOString() }
+//   }
+// };
 
 const reducerFunction = createReducer(
   initialState,
-  on(holidaysActions.addHoliday, (state, action) => adapter.addOne(action.payload, state))
+  on(holidaysActions.loadHolidaysSucceeded, (state, action) => adapter.addAll(action.payload, state)),
+  on(holidaysActions.addHoliday, (state, action) => adapter.addOne(action.payload, state)),
+  on(holidaysActions.addHolidaySucceeded, (state, action) => {
+    const oldState = adapter.removeOne(action.oldId, state);
+    return adapter.addOne(action.payload, oldState);
+  }),
+  on(holidaysActions.addHolidayFailed, (state, action) => adapter.removeOne(action.payload.id, state))
 );
 
 export function reducer(state: HolidayState = initialState, action: Action) {

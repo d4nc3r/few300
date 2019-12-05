@@ -1,9 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { reducers } from './reducers';
 
+import { reducers } from './reducers';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavComponent } from './components/nav/nav.component';
@@ -29,6 +30,7 @@ import { environment } from 'src/environments/environment';
         strictStateSerializability: true // <-- this one will cause the default RouterStore to fail
       }
     }),
+    EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument()
   ],
   providers: [],

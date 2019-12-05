@@ -12,6 +12,7 @@ import { HomeComponent } from './components/home/home.component';
 import { GiftGivingModule } from './features/gift-giving/gift-giving.module';
 import { environment } from 'src/environments/environment';
 import { ErrorComponent } from './components/error/error.component';
+import { AuthGuardService } from './auth-guard.service';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,7 @@ import { ErrorComponent } from './components/error/error.component';
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument()
   ],
-  providers: [],
+  providers: [AuthGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

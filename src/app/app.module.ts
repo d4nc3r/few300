@@ -10,9 +10,10 @@ import { AppComponent } from './app.component';
 import { NavComponent } from './components/nav/nav.component';
 import { HomeComponent } from './components/home/home.component';
 import { GiftGivingModule } from './features/gift-giving/gift-giving.module';
-import { environment } from 'src/environments/environment';
 import { ErrorComponent } from './components/error/error.component';
 import { AuthGuardService } from './auth-guard.service';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { AuthGuardService } from './auth-guard.service';
       }
     }),
     EffectsModule.forRoot([]),
-    StoreDevtoolsModule.instrument()
+    StoreDevtoolsModule.instrument(),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [AuthGuardService],
   bootstrap: [AppComponent]

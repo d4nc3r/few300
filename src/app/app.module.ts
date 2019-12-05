@@ -11,12 +11,14 @@ import { NavComponent } from './components/nav/nav.component';
 import { HomeComponent } from './components/home/home.component';
 import { GiftGivingModule } from './features/gift-giving/gift-giving.module';
 import { environment } from 'src/environments/environment';
+import { ErrorComponent } from './components/error/error.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavComponent,
     HomeComponent,
+    ErrorComponent,
   ],
   imports: [
     BrowserModule,

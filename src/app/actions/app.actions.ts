@@ -8,3 +8,7 @@ export const applicationError = createAction(
   '[app] application error',
   props<{ message: string; feature: string; }>()
 );
+
+export const clearAppError = createAction(
+  '[app] clear application error'
+);

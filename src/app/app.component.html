@@ -3,6 +3,8 @@
   <h2>Progressive ITU</h2>
 </header>
 <main class="container">
+  <app-error *ngIf="hasError$ | async"
+             [errorMessage]="errorMessage$ | async"></app-error>
   <app-nav></app-nav>
   <router-outlet></router-outlet>
 </main>

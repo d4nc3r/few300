@@ -21,5 +21,6 @@ const myReducer = createReducer(
   on(actions.applicationError, (state, action) => ({
     hasError: true,
     errorMessage: action.message
-  }))
+  })),
+  on(actions.clearAppError, () => initialState)
 );

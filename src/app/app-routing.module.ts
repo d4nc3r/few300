@@ -5,6 +5,7 @@ import { HomeComponent } from './components/home/home.component';
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: '**', redirectTo: 'home' },
+  { path: 'administration', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule) },
 ];
 
 @NgModule({

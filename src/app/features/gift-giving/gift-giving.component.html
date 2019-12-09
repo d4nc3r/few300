@@ -7,7 +7,8 @@
       <app-nav></app-nav>
     </div>
   </section>
-  <section class="col-9">
+  <section *ngIf="(isLoaded$ | async)"
+           class="col-9">
     <router-outlet></router-outlet>
   </section>
 </div>

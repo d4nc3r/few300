@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { GiftGivingState, selectIsLoaded } from './reducers';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-gift-giving',
@@ -6,10 +9,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./gift-giving.component.scss']
 })
 export class GiftGivingComponent implements OnInit {
+  isLoaded$: Observable<boolean>;
 
-  constructor() { }
+  constructor(private store: Store<GiftGivingState>) { }
 
   ngOnInit() {
+    this.isLoaded$ = this.store.select(selectIsLoaded);
   }
 
 }

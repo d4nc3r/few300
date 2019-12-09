@@ -5,6 +5,7 @@ import * as fromHolidays from './holidays.reducer';
 import * as fromHolidayModels from '../models/holidays';
 import * as fromHolidayListControl from './holiday-list-controls.reducer';
 import * as fromRecipients from './recipients.reducer';
+import * as fromLoading from './loading.reducer';
 import * as fromRecipientsModel from '../models/recipients';
 import * as fromHolidayListControlModels from '../models/list-controls';
 import { HolidayWithRecipients } from '../models/dashboard';
@@ -15,12 +16,14 @@ export interface GiftGivingState {
   holidays: fromHolidays.HolidayState;
   holidayListControls: fromHolidayListControl.HolidayListControlState;
   recipients: fromRecipients.RecipientsState;
+  loading: fromLoading.LoadingState;
 }
 
 export const reducers: ActionReducerMap<GiftGivingState> = {
   holidays: fromHolidays.reducer,
   holidayListControls: fromHolidayListControl.reducer,
-  recipients: fromRecipients.reducer
+  recipients: fromRecipients.reducer,
+  loading: fromLoading.reducer
 };
 
 // Selectors
@@ -32,6 +35,7 @@ const selectGiftFeature = createFeatureSelector<GiftGivingState>(featureName);
 const selectHolidaysBranch = createSelector(selectGiftFeature, g => g.holidays);
 const selectHolidayListControlsBranch = createSelector(selectGiftFeature, g => g.holidayListControls);
 const selectRecipientsBranch = createSelector(selectGiftFeature, g => g.recipients);
+const selectLoadingBranch = createSelector(selectGiftFeature, g => g.loading);
 
 // 3. Helpers
 const { selectAll: selectHolidaysArray, selectEntities: selectHolidaysEntities } = fromHolidays.adapter.getSelectors(selectHolidaysBranch);
@@ -115,6 +119,11 @@ export const selectHolidayListControls = createSelector(
       sortingByName: b.sortBy === 'name'
     } as fromHolidayListControlModels.ListControlsModel;
   }
+);
+
+export const selectIsLoaded = createSelector(
+  selectLoadingBranch,
+  l => l.holidaysLoaded && l.recipientsLoaded
 );
 
 export const selectRecipients = createSelector(

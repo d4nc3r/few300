@@ -55,13 +55,29 @@ export class RecipientsEffects {
   addRecipientHolidays$ = createEffect(() =>
     this.actions$.pipe(
       ofType(recipientActions.addRecipientSucceeded),
-      switchMap((action) => this.http.put(`${environment.rootApiUrl}/recipients/${action.payload.id}/holidays`,
+      switchMap(action => this.http.put(`${environment.rootApiUrl}/recipients/${action.payload.id}/holidays`,
         action.payload.selectedHolidayIds)
         .pipe(
           catchError(err => of({ type: 'add failed', payload: err }))
         )
       )
     ), { dispatch: false }
+  );
+
+  deleteRecipientHoliday$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(recipientActions.removeHolidayFromRecipient),
+      switchMap(action => this.http.delete(`${environment.rootApiUrl}/recipients/${action.recipientId}/holidays/${action.holidayId}`)
+        .pipe(
+          map(() => recipientActions.removeHolidaySucceeded()),
+          catchError(err => of(recipientActions.removeHolidayFailed({
+            recipientId: action.recipientId,
+            holidayId: action.holidayId,
+            message: err.message
+          })))
+        )
+      )
+    ), { dispatch: true }
   );
 }
 

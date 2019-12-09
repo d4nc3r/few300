@@ -38,3 +38,12 @@ export const removeHolidayFromRecipient = createAction(
   '[gift giving] removed holiday from recipient',
   props<{ recipientId, holidayId }>()
 );
+
+export const removeHolidaySucceeded = createAction(
+  '[gift giving] successfully removed holiday from recipient'
+);
+
+export const removeHolidayFailed = createAction(
+  '[gift giving] failed to remove holiday from recipient',
+  props<{ recipientId: string, holidayId: string, message: string }>()
+);

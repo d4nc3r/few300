@@ -4,16 +4,24 @@ import { map } from 'rxjs/operators';
 
 import * as appActions from '../../../actions/app.actions';
 import * as holidaysActions from '../actions/holidays.actions';
+import * as recipientActions from '../actions/receipients.actions';
 
 @Injectable()
 export class AppEffects {
   constructor(private actions$: Actions) { }
 
   // turn app_started into loadHolidays
-  loadDataOnAppStart$ = createEffect(() =>
+  loadHolidaysOnAppStart$ = createEffect(() =>
     this.actions$.pipe(
       ofType(appActions.applicationStarted),
       map(() => holidaysActions.loadHolidays())
+    )
+  );
+
+  loadRecipientsOnAppStart$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(appActions.applicationStarted),
+      map(() => recipientActions.loadRecipients())
     )
   );
 

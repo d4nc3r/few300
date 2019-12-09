@@ -1,1 +1,17 @@
-<p>dashboard works!</p>
+<div *ngFor="let model of this.holidaysWithRecipients$ | async"
+     class="card mb-3">
+  <div class="card-body">
+    <h5 class="card-title">{{model.holiday.name}}</h5>
+    <p class="card-text">{{model.holiday.date | date}}</p>
+    <div class="mb-2"><em>People to buy for:</em></div>
+    <ul *ngIf="model.recipients.length > 0; else noRecipients"
+        class="list-group">
+      <li *ngFor="let recipient of model.recipients"
+          class="list-group-item">{{recipient.name}} (<a href="mailto:{{recipient.email}}">{{recipient.email}}</a>)</li>
+    </ul>
+  </div>
+</div>
+
+<ng-template #noRecipients>
+  <p>No recipients for this holiday!</p>
+</ng-template>

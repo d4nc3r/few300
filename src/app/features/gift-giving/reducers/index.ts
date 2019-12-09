@@ -7,6 +7,7 @@ import * as fromHolidayListControl from './holiday-list-controls.reducer';
 import * as fromRecipients from './recipients.reducer';
 import * as fromRecipientsModel from '../models/recipients';
 import * as fromHolidayListControlModels from '../models/list-controls';
+import { HolidayWithRecipients } from '../models/dashboard';
 
 export const featureName = 'giftGivingFeature';
 
@@ -121,9 +122,10 @@ export const selectRecipients = createSelector(
   selectHolidaysEntities,
   (recipients, holidaysEntity) => {
     return recipients.map(recipient => {
-      const holidays = recipient.selectedHolidayIds
-        .map(id => holidaysEntity[id])
-        .map(createHoliday);
+      const holidays = recipient.selectedHolidayIds ?
+        recipient.selectedHolidayIds
+          .map(id => holidaysEntity[id])
+          .map(createHoliday) : [];
 
       return {
         id: recipient.id,
@@ -132,6 +134,42 @@ export const selectRecipients = createSelector(
         holidays
       } as fromRecipientsModel.RecipientListModel;
     });
+  }
+);
+
+const selectHolidaysWithRecipients = createSelector(
+  selectHolidaysArray,
+  selectRecipientsArray,
+  (holidays, recipients) => {
+    return holidays.map(holiday => {
+      const recipientsForHoliday = recipients.filter(r =>
+        r.selectedHolidayIds.includes(holiday.id));
+
+      return {
+        holiday,
+        recipients: recipientsForHoliday
+      } as HolidayWithRecipients;
+    });
+  }
+);
+
+const selectHolidaywithRecipientsFiltered = createSelector(
+  selectHolidaysWithRecipients,
+  holidaysWithRecipients => {
+    return [...holidaysWithRecipients.filter(h => {
+      return new Date(h.holiday.date) >= new Date();
+    })];
+  }
+);
+
+export const selectHolidaysWithRecipientsSorted = createSelector(
+  selectHolidaywithRecipientsFiltered,
+  holidaysWithRecipients => {
+    return [...holidaysWithRecipients.sort((lhs, rhs) => {
+      if (new Date(lhs.holiday.date) < new Date(rhs.holiday.date)) { return -1; }
+      if (new Date(lhs.holiday.date) > new Date(rhs.holiday.date)) { return 1; }
+      return 0;
+    })];
   }
 );
 

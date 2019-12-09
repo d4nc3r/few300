@@ -19,6 +19,7 @@ import { ReceipientListComponent } from './containers/recipients/receipient-list
 import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './effects/app.effects';
 import { HolidaysEffects } from './effects/holidays.effects';
+import { RecipientsEffects } from './effects/recipients.effect';
 
 const routes: Routes = [
   {
@@ -51,7 +52,7 @@ const routes: Routes = [
     HttpClientModule,
     RouterModule.forChild(routes),
     StoreModule.forFeature(featureName, reducers),
-    EffectsModule.forFeature([AppEffects, HolidaysEffects])
+    EffectsModule.forFeature([AppEffects, HolidaysEffects, RecipientsEffects])
   ]
 })
 export class GiftGivingModule { }

@@ -20,7 +20,12 @@ const initialState = adapter.getInitialState();
 
 const reducerFunction = createReducer(
   initialState,
-  on(actions.addRecipient, (state, action) => adapter.addOne(action.payload, state))
+  on(actions.loadRecipientsSucceeded, (state, action) => adapter.addAll(action.payload, state)),
+  on(actions.addRecipient, (state, action) => adapter.addOne(action.payload, state)),
+  on(actions.addRecipientSucceeded, (state, action) => {
+    const oldState = adapter.removeOne(action.oldId, state);
+    return adapter.addOne(action.payload, oldState);
+  })
 );
 
 export function reducer(state: RecipientsState = initialState, action: Action) {

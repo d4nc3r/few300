@@ -33,3 +33,8 @@ export const addRecipientFailed = createAction(
   '[gift giving] failed to add recipient',
   props<{ payload: RecipientsEntity, message: string }>()
 );
+
+export const removeHolidayFromRecipient = createAction(
+  '[gift giving] removed holiday from recipient',
+  props<{ recipientId, holidayId }>()
+);

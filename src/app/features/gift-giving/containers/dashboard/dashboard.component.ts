@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 
 import { GiftGivingState, selectHolidaysWithRecipientsSorted } from '../../reducers';
 import { HolidayWithRecipients } from '../../models/dashboard';
+import * as recipientsActions from '../../actions/receipients.actions';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,6 +18,10 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.holidaysWithRecipients$ = this.store.select(selectHolidaysWithRecipientsSorted);
+  }
+
+  removeRecipient(recipientId: string, holidayId: string) {
+    this.store.dispatch(recipientsActions.removeHolidayFromRecipient({ recipientId, holidayId }));
   }
 
 }
